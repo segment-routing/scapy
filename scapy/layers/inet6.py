@@ -1040,6 +1040,14 @@ class IPv6ExtHdrSegmentRoutingTLVEgressNode(IPv6ExtHdrSegmentRoutingTLV):
                     ByteField("flags", 0),
                     IP6Field("egress_node", "::1") ]
 
+class IPv6ExtHdrSegmentRoutingTLVOpaque(IPv6ExtHdrSegmentRoutingTLV):
+    name = "IPv6 Option Header Segment Routing - Opaque TLV"
+    fields_desc = [ ByteField("type", 3),
+                    ByteField("len", 18),
+                    ByteField("reserved", 0),
+                    ByteField("flags", 0),
+                    StrFixedLenField("container", "", 16) ]
+
 
 class IPv6ExtHdrSegmentRoutingTLVPadding(IPv6ExtHdrSegmentRoutingTLV):
     name = "IPv6 Option Header Segment Routing - Padding TLV"
@@ -1047,6 +1055,21 @@ class IPv6ExtHdrSegmentRoutingTLVPadding(IPv6ExtHdrSegmentRoutingTLV):
                     FieldLenField("len", None, length_of="padding", fmt="B"),
                     StrLenField("padding", b"\x00", length_from=lambda pkt: pkt.len) ]
 
+
+class IPv6ExtHdrSegmentRoutingTLVHMAC(IPv6ExtHdrSegmentRoutingTLV):
+    name = "IPv6 Option Header Segment Routing - HMAC TLV"
+    fields_desc = [ ByteField("type", 5),
+                    ByteField("len", 38),
+                    ShortField("reserved", 0),
+                    IntField("keyid", 0),
+                    StrFixedLenField("hmac", "", 32) ]
+
+class IPv6ExtHdrSegmentRoutingTLVNSHCarrier(IPv6ExtHdrSegmentRoutingTLV):
+    name = "IPv6 Option Header Segment Routing - NSH Carrier TLV"
+    fields_desc = [ ByteField("type", 6),
+                    FieldLenField("len", None, length_of="nsh_object", fmt="B"),
+                    ByteField("flags", 0),
+                    StrLenField("nsh_object", "", length_from=lambda pkt: pkt.len) ]
 
 class IPv6ExtHdrSegmentRouting(_IPv6ExtHdr):
     name = "IPv6 Option Header Segment Routing"
