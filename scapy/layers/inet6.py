@@ -1067,9 +1067,10 @@ class IPv6ExtHdrSegmentRoutingTLVHMAC(IPv6ExtHdrSegmentRoutingTLV):
 class IPv6ExtHdrSegmentRoutingTLVNSHCarrier(IPv6ExtHdrSegmentRoutingTLV):
     name = "IPv6 Option Header Segment Routing - NSH Carrier TLV"
     fields_desc = [ ByteField("type", 6),
-                    FieldLenField("len", None, length_of="nsh_object", fmt="B"),
+                    FieldLenField("len", None, length_of="nsh_object", fmt="B",
+                        adjust = lambda pkt,x: x+1),
                     ByteField("flags", 0),
-                    StrLenField("nsh_object", "", length_from=lambda pkt: pkt.len) ]
+                    StrLenField("nsh_object", "", length_from=lambda pkt: pkt.len-1) ]
 
 class IPv6ExtHdrSegmentRouting(_IPv6ExtHdr):
     name = "IPv6 Option Header Segment Routing"
