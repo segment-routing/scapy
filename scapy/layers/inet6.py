@@ -1002,7 +1002,7 @@ class IPv6ExtHdrRouting(_IPv6ExtHdr):
 class IPv6ExtHdrSegmentRoutingTLV(Packet):
     name = "IPv6 Option Header Segment Routing - Generic TLV"
     fields_desc = [ ByteField("type", 0),
-                    ByteField("len", 0),
+                    FieldLenField("len", None, length_of="value", fmt="B"),
                     StrLenField("value", "", length_from=lambda pkt: pkt.len) ]
 
     def extract_padding(self, p):
