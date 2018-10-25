@@ -1030,7 +1030,10 @@ class IPv6ExtHdrSegmentRouting(_IPv6ExtHdr):
             pkt = pkt[:3] + struct.pack("B", tmp_len) + pkt[4:]
 
         if self.lastentry is None:
-            pkt = pkt[:4] + struct.pack("B", len(self.addresses)) + pkt[5:]
+            tmp_len = len(self.addresses)
+            if tmp_len:
+                tmp_len -= 1
+            pkt = pkt[:4] + struct.pack("B", tmp_len) + pkt[5:]
 
         return _IPv6ExtHdr.post_build(self, pkt, pay)
 
